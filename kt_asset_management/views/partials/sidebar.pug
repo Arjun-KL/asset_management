@@ -1,0 +1,37 @@
+aside.sidebar
+  .sidebar-brand
+    a(href="/")
+      img.sidebar-logo-full(src="/logo.png", alt="KT Telematic")
+      img.sidebar-logo-mark(src="/favicon.png", alt="KT Telematic")
+  nav.sidebar-nav
+    .sidebar-nav-section Overview
+    a.sidebar-link(href="/stock", title="Stock View", class=currentPath && currentPath.startsWith('/stock') ? 'active' : '')
+      i.bi.bi-bar-chart
+      span Stock View
+
+    .sidebar-nav-section Masters
+    a.sidebar-link(href="/employees", title="Employees", class=currentPath && currentPath.startsWith('/employees') ? 'active' : '')
+      i.bi.bi-people
+      span Employees
+    a.sidebar-link(href="/assets", title="Assets", class=currentPath && currentPath.startsWith('/assets') ? 'active' : '')
+      i.bi.bi-laptop
+      span Assets
+    a.sidebar-link(href="/categories", title="Asset Categories", class=currentPath && currentPath.startsWith('/categories') ? 'active' : '')
+      i.bi.bi-tags
+      span Asset Categories
+
+    .sidebar-nav-section Transactions
+    a.sidebar-link(href="/issue-asset", title="Issue Asset", class=currentPath === '/issue-asset' ? 'active' : '')
+      i.bi.bi-box-arrow-up
+      span Issue Asset
+    a.sidebar-link(href="/return-asset", title="Return Asset", class=currentPath === '/return-asset' ? 'active' : '')
+      i.bi.bi-box-arrow-in-down
+      span Return Asset
+    a.sidebar-link(href="/scrap-asset", title="Scrap Asset", class=currentPath === '/scrap-asset' ? 'active' : '')
+      i.bi.bi-trash3
+      span Scrap Asset
+
+  .sidebar-footer
+    button.sidebar-toggle#sidebarToggle(type="button", title="Collapse sidebar")
+      i.bi.bi-chevron-double-left
+      span Collapse

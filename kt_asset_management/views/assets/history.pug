@@ -1,0 +1,30 @@
+extends ../layout
+
+include ../mixins/page-header
+
+block content
+  - var actionIcons = { purchase: 'bi-cart-check', issue: 'bi-arrow-up-right', return: 'bi-arrow-down-left', scrap: 'bi-trash' }
+  - var actionLabels = { purchase: 'Purchased', issue: 'Issued', return: 'Returned', scrap: 'Scrapped' }
+  +pageHeader(`${asset.assetCode} — History`, `${asset.make} ${asset.model}${asset.AssetCategory ? ' · ' + asset.AssetCategory.name : ''}`)
+    a.btn.btn-outline-secondary(href=`/assets/${asset.id}`)
+      i.bi.bi-arrow-left.me-1
+      | Back to Asset
+
+  .table-surface(style="max-width: 640px; padding: 2rem;")
+    if history.length
+      .timeline
+        each entry in history
+          .timeline-item
+            .timeline-dot(class=`action-${entry.action}`)
+              i.bi(class=actionIcons[entry.action])
+            .timeline-title= actionLabels[entry.action]
+            .timeline-meta
+              | #{new Date(entry.actionDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+              if entry.Employee
+                |  · #{entry.action === 'issue' ? 'to' : entry.action === 'return' ? 'by' : ''} #{entry.Employee.name}
+              if entry.reason
+                |  · Reason: #{entry.reason.charAt(0).toUpperCase() + entry.reason.slice(1)}
+            if entry.notes
+              .timeline-notes= entry.notes
+    else
+      p.text-muted.mb-0 No history recorded for this asset yet.

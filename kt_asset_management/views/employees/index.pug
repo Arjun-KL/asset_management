@@ -1,0 +1,43 @@
+extends ../layout
+
+include ../mixins/datatable
+include ../mixins/page-header
+include ../mixins/filter-pills
+
+block content
+  +pageHeader('Employees', 'Manage employee records used for issuing and returning assets.')
+    a.btn.btn-primary(href="/employees/new")
+      i.bi.bi-plus-lg.me-1
+      | New Employee
+
+  .mb-3
+    +filterPills('employeesTable', 4, [{label: 'All', value: ''}, {label: 'Active', value: 'Active'}, {label: 'Inactive', value: 'Inactive'}])
+
+  .table-surface
+    table#employeesTable.table.w-100
+      thead
+        tr
+          th Employee Code
+          th Name
+          th Department
+          th Branch
+          th Status
+          th(style="width: 100px;") Actions
+      tbody
+        each employee in employees
+          tr
+            td= employee.employeeCode
+            td
+              a(href=`/employees/${employee.id}`)= employee.name
+            td= employee.department || '—'
+            td= employee.branch
+            td
+              span.status-badge(class=employee.isActive ? 'status-in_stock' : 'status-scrapped')= employee.isActive ? 'Active' : 'Inactive'
+            td
+              a.icon-btn.me-1(href=`/employees/${employee.id}/edit`, title="Edit")
+                i.bi.bi-pencil
+              a.icon-btn(href=`/employees/${employee.id}`, title="View")
+                i.bi.bi-eye
+
+block scripts
+  +datatableInit('employeesTable', 'No employees yet — add your first one to get started.')

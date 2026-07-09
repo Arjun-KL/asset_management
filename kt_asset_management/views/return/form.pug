@@ -1,0 +1,31 @@
+extends ../layout
+
+include ../mixins/page-header
+
+block content
+  +pageHeader('Return Asset', 'Take back an issued asset from an employee.')
+
+  .table-surface(style="max-width: 560px; padding: 1.75rem;")
+    form(method="POST", action="/return-asset")
+      .mb-3
+        label.form-label(for="assetId") Asset
+        select.form-select#assetId(name="assetId", required)
+          option(value="", disabled, selected=!selectedAssetId) Select an issued asset
+          each asset in assets
+            option(value=asset.id, selected=String(selectedAssetId) === String(asset.id))= `${asset.assetCode} — ${asset.make} ${asset.model} (held by ${asset.currentHolder ? asset.currentHolder.name : 'unknown'})`
+        if !assets.length
+          p.form-text.text-muted No assets are currently issued.
+
+      .mb-3
+        label.form-label(for="reason") Reason for Return
+        select.form-select#reason(name="reason", required)
+          option(value="", disabled, selected) Select a reason
+          each reason in reasons
+            option(value=reason)= reason.charAt(0).toUpperCase() + reason.slice(1)
+
+      .mb-3
+        label.form-label(for="notes") Notes (optional)
+        textarea.form-control#notes(name="notes", rows="2")
+
+      button.btn.btn-primary(type="submit", disabled=!assets.length) Return Asset
+      a.btn.btn-link(href="/assets") Cancel

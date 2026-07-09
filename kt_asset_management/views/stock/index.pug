@@ -1,0 +1,44 @@
+extends ../layout
+
+include ../mixins/page-header
+
+block content
+  +pageHeader('Stock View', 'Assets ready to be issued, grouped by branch. Excludes issued and scrapped assets.')
+
+  .row.g-3.mb-4
+    .col-md-4
+      .stat-card
+        .stat-label Assets In Stock
+        .stat-value= grandTotal.count
+    .col-md-4
+      .stat-card
+        .stat-label Total Value
+        .stat-value= Number(grandTotal.totalValue).toLocaleString(undefined, { style: 'currency', currency: 'INR', maximumFractionDigits: 0 })
+    .col-md-4
+      .stat-card
+        .stat-label Branches
+        .stat-value= branches.length
+
+  .table-surface
+    table.table.plain-table.w-100
+      thead
+        tr
+          th Branch
+          th Assets In Stock
+          th Total Value
+      tbody
+        if branches.length
+          each b in branches
+            tr
+              td= b.branch
+              td= b.count
+              td= Number(b.totalValue).toLocaleString(undefined, { style: 'currency', currency: 'INR' })
+        else
+          tr
+            td.text-center.text-muted(colspan="3", style="padding: 2.5rem 1rem;") No assets in stock yet.
+      if branches.length
+        tfoot
+          tr
+            th Grand Total
+            th= grandTotal.count
+            th= Number(grandTotal.totalValue).toLocaleString(undefined, { style: 'currency', currency: 'INR' })

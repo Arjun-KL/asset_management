@@ -1,0 +1,28 @@
+extends ../layout
+
+include ../mixins/page-header
+
+block content
+  +pageHeader('Scrap Asset', 'Mark an asset as obsolete. Scrapped assets are hidden everywhere except Asset History.')
+
+  .table-surface(style="max-width: 560px; padding: 1.75rem;")
+    form(method="POST", action="/scrap-asset")
+      .mb-3
+        label.form-label(for="assetId") Asset
+        select.form-select#assetId(name="assetId", required)
+          option(value="", disabled, selected=!selectedAssetId) Select an asset
+          each asset in assets
+            option(value=asset.id, selected=String(selectedAssetId) === String(asset.id))= `${asset.assetCode} — ${asset.make} ${asset.model} (${asset.status === 'issued' ? 'issued to ' + (asset.currentHolder ? asset.currentHolder.name : 'unknown') : 'in stock'})`
+        if !assets.length
+          p.form-text.text-muted No assets available to scrap.
+
+      .mb-3
+        label.form-label(for="notes") Reason / Notes (optional)
+        textarea.form-control#notes(name="notes", rows="2", placeholder="e.g. beyond economical repair")
+
+      .alert.alert-danger.py-2.px-3(role="alert", style="font-size: 0.875rem;")
+        i.bi.bi-exclamation-triangle.me-1
+        | This cannot be easily undone from the UI. The asset will disappear from every list and dashboard except its own Asset History.
+
+      button.btn.btn-primary(type="submit", disabled=!assets.length) Scrap Asset
+      a.btn.btn-link(href="/assets") Cancel

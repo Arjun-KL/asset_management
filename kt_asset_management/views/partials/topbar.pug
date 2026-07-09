@@ -1,0 +1,22 @@
+header.topbar
+  .topbar-greeting
+    | Welcome back,
+    |
+    strong= user.username
+    |
+    span.wave 👋
+  .topbar-actions
+    button.tour-btn#startTourBtn(type="button")
+      i.bi.bi-compass
+      | Take a tour
+    .dropdown
+      button.user-menu-toggle(type="button", data-bs-toggle="dropdown", aria-expanded="false")
+        span.user-avatar= user.username.charAt(0).toUpperCase()
+        span.user-name= user.username
+        i.bi.bi-chevron-down
+      ul.dropdown-menu.dropdown-menu-end
+        li
+          form(method="POST", action="/logout")
+            button.dropdown-item(type="submit")
+              i.bi.bi-box-arrow-right.me-2
+              | Log out

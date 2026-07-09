@@ -1,0 +1,32 @@
+extends ../layout
+
+include ../mixins/datatable
+include ../mixins/page-header
+
+block content
+  +pageHeader('Asset Categories', 'Manage the categories assets are classified under.')
+    a.btn.btn-primary(href="/categories/new")
+      i.bi.bi-plus-lg.me-1
+      | New Category
+
+  .table-surface
+    table#categoriesTable.table.w-100
+      thead
+        tr
+          th Name
+          th Description
+          th(style="width: 100px;") Actions
+      tbody
+        each category in categories
+          tr
+            td= category.name
+            td= category.description
+            td
+              a.icon-btn.me-1(href=`/categories/${category.id}/edit`, title="Edit")
+                i.bi.bi-pencil
+              form.d-inline(method="POST", action=`/categories/${category.id}?_method=DELETE`, onsubmit="return confirm('Delete this category?');")
+                button.icon-btn.icon-btn-danger(type="submit", title="Delete")
+                  i.bi.bi-trash
+
+block scripts
+  +datatableInit('categoriesTable', 'No asset categories yet — create your first one to get started.')

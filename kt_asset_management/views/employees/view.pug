@@ -1,0 +1,25 @@
+extends ../layout
+
+include ../mixins/page-header
+
+block content
+  +pageHeader(employee.name, employee.employeeCode)
+    a.btn.btn-outline-secondary(href=`/employees/${employee.id}/edit`)
+      i.bi.bi-pencil.me-1
+      | Edit
+
+  .table-surface(style="max-width: 560px; padding: 1.75rem;")
+    dl.row.mb-0
+      dt.col-sm-4.text-muted Employee Code
+      dd.col-sm-8= employee.employeeCode
+      dt.col-sm-4.text-muted Name
+      dd.col-sm-8= employee.name
+      dt.col-sm-4.text-muted Email
+      dd.col-sm-8= employee.email || '—'
+      dt.col-sm-4.text-muted Department
+      dd.col-sm-8= employee.department || '—'
+      dt.col-sm-4.text-muted Branch
+      dd.col-sm-8= employee.branch
+      dt.col-sm-4.text-muted Status
+      dd.col-sm-8
+        span.status-badge(class=employee.isActive ? 'status-in_stock' : 'status-scrapped')= employee.isActive ? 'Active' : 'Inactive'

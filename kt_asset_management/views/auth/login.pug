@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  .auth-page
+    .auth-card
+      img(src="/logo.png", alt="KT Telematic")
+      h1 Sign in to Asset Management
+      form(method="POST", action="/login")
+        .mb-3
+          label.form-label(for="username") Username
+          input.form-control#username(type="text", name="username", required, autofocus)
+        .mb-3
+          label.form-label(for="password") Password
+          input.form-control#password(type="password", name="password", required)
+        button.btn.btn-primary.w-100.mt-2(type="submit") Log in
+    .auth-footer © #{new Date().getFullYear()} KT Telematic Solutions Private Limited

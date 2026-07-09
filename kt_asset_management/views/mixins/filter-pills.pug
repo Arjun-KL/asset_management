@@ -1,0 +1,4 @@
+mixin filterPills(tableId, colIndex, options)
+  .filter-pills(data-table=tableId, data-col=colIndex)
+    each opt in options
+      button.filter-pill(type="button", class=opt.value === '' ? 'active' : '', data-value=opt.value)= opt.label

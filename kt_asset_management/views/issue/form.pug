@@ -1,0 +1,33 @@
+extends ../layout
+
+include ../mixins/page-header
+
+block content
+  +pageHeader('Issue Asset', 'Assign an in-stock asset to an active employee.')
+
+  .table-surface(style="max-width: 560px; padding: 1.75rem;")
+    form(method="POST", action="/issue-asset")
+      .mb-3
+        label.form-label(for="assetId") Asset
+        select.form-select#assetId(name="assetId", required)
+          option(value="", disabled, selected=!selectedAssetId) Select an in-stock asset
+          each asset in assets
+            option(value=asset.id, selected=String(selectedAssetId) === String(asset.id))= `${asset.assetCode} — ${asset.make} ${asset.model} (${asset.branch})`
+        if !assets.length
+          p.form-text.text-muted No assets are currently in stock.
+
+      .mb-3
+        label.form-label(for="employeeId") Employee
+        select.form-select#employeeId(name="employeeId", required)
+          option(value="", disabled, selected) Select an active employee
+          each employee in employees
+            option(value=employee.id)= `${employee.employeeCode} — ${employee.name}`
+        if !employees.length
+          p.form-text.text-muted No active employees found.
+
+      .mb-3
+        label.form-label(for="notes") Notes (optional)
+        textarea.form-control#notes(name="notes", rows="2")
+
+      button.btn.btn-primary(type="submit", disabled=!assets.length || !employees.length) Issue Asset
+      a.btn.btn-link(href="/assets") Cancel

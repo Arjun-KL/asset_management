@@ -1,0 +1,17 @@
+extends ../layout
+
+include ../mixins/page-header
+
+block content
+  +pageHeader(title)
+
+  .table-surface(style="max-width: 480px; padding: 1.5rem;")
+    form(method="POST", action=category.id ? `/categories/${category.id}?_method=PUT` : '/categories')
+      .mb-3
+        label.form-label(for="name") Name
+        input.form-control#name(type="text", name="name", value=category.name, required, autofocus)
+      .mb-3
+        label.form-label(for="description") Description
+        textarea.form-control#description(name="description", rows="3")= category.description
+      button.btn.btn-primary(type="submit") Save
+      a.btn.btn-link(href="/categories") Cancel

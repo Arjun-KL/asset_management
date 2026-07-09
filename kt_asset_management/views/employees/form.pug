@@ -1,0 +1,33 @@
+extends ../layout
+
+include ../mixins/page-header
+
+block content
+  +pageHeader(title)
+
+  .table-surface(style="max-width: 560px; padding: 1.75rem;")
+    form(method="POST", action=employee.id ? `/employees/${employee.id}?_method=PUT` : '/employees')
+      .row
+        .col-md-6.mb-3
+          label.form-label(for="employeeCode") Employee Code
+          input.form-control#employeeCode(type="text", name="employeeCode", value=employee.employeeCode, required, autofocus)
+        .col-md-6.mb-3
+          label.form-label(for="name") Name
+          input.form-control#name(type="text", name="name", value=employee.name, required)
+      .row
+        .col-md-6.mb-3
+          label.form-label(for="email") Email
+          input.form-control#email(type="email", name="email", value=employee.email)
+        .col-md-6.mb-3
+          label.form-label(for="department") Department
+          input.form-control#department(type="text", name="department", value=employee.department)
+      .row
+        .col-md-6.mb-3
+          label.form-label(for="branch") Branch
+          input.form-control#branch(type="text", name="branch", value=employee.branch, required, placeholder="e.g. Chennai")
+        .col-md-6.mb-3.d-flex.align-items-end
+          .form-check
+            input.form-check-input#isActive(type="checkbox", name="isActive", checked=employee.isActive)
+            label.form-check-label(for="isActive") Active employee
+      button.btn.btn-primary(type="submit") Save
+      a.btn.btn-link(href="/employees") Cancel

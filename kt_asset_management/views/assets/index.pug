@@ -1,0 +1,59 @@
+extends ../layout
+
+include ../mixins/datatable
+include ../mixins/page-header
+include ../mixins/filter-pills
+
+block content
+  +pageHeader('Assets', 'Every laptop, phone, and tool the company owns.')
+    a.btn.btn-primary(href="/assets/new")
+      i.bi.bi-plus-lg.me-1
+      | New Asset
+
+  .mb-3
+    - var pillOptions = [{label: 'All', value: ''}]
+    each category in categories
+      - pillOptions.push({label: category.name, value: category.name})
+    +filterPills('assetsTable', 3, pillOptions)
+
+  .table-surface
+    table#assetsTable.table.w-100
+      thead
+        tr
+          th(style="width: 56px;")
+          th Asset Code
+          th Serial Number
+          th Category
+          th Make / Model
+          th Branch
+          th Status
+          th Holder
+          th(style="width: 130px;") Actions
+      tbody
+        each asset in assets
+          tr
+            td
+              if asset.photoPath
+                img.table-thumb(src=asset.photoPath, alt=asset.assetCode)
+              else
+                span.table-thumb-placeholder
+                  i.bi.bi-image
+            td
+              a(href=`/assets/${asset.id}`)= asset.assetCode
+            td= asset.serialNumber
+            td= asset.AssetCategory ? asset.AssetCategory.name : '—'
+            td= `${asset.make} ${asset.model}`
+            td= asset.branch
+            td
+              span.status-badge(class=`status-${asset.status}`)= asset.status === 'in_stock' ? 'In Stock' : 'Issued'
+            td= asset.currentHolder ? asset.currentHolder.name : '—'
+            td
+              a.icon-btn.me-1(href=`/assets/${asset.id}/edit`, title="Edit")
+                i.bi.bi-pencil
+              a.icon-btn.me-1(href=`/assets/${asset.id}`, title="View")
+                i.bi.bi-eye
+              a.icon-btn(href=`/assets/${asset.id}/history`, title="History")
+                i.bi.bi-clock-history
+
+block scripts
+  +datatableInit('assetsTable', 'No assets yet — add your first one to get started.')

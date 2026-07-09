@@ -1,0 +1,13 @@
+mixin datatableInit(tableId, emptyMessage)
+  script.
+    $(function () {
+      $('##{tableId}').DataTable({
+        pageLength: 25,
+        order: [],
+        language: {
+          emptyTable: '#{emptyMessage || "No records found."}',
+          search: '',
+          searchPlaceholder: 'Search…',
+        },
+      });
+    });
